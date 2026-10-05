@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "jurusans",
+  "info": {
+    "singularName": "jurusan",
+    "pluralName": "jurusans",
+    "displayName": "Jurusan"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nama": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "nama",
+      "required": true
+    }
+  }
+}
