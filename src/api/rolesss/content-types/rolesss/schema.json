@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "roless",
+  "info": {
+    "singularName": "rolesss",
+    "pluralName": "roless",
+    "displayName": "Role"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nama": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "nama",
+      "required": true
+    }
+  }
+}
