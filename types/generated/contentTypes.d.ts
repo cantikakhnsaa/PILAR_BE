@@ -536,6 +536,50 @@ export interface ApiRolesssRolesss extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiTempatPklTempatPkl extends Struct.CollectionTypeSchema {
+  collectionName: 'tempat_pkls';
+  info: {
+    displayName: 'Tempat PKL';
+    pluralName: 'tempat-pkls';
+    singularName: 'tempat-pkl';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    cabang_list: Schema.Attribute.Component<'cabang.cabang', true>;
+    card_description: Schema.Attribute.Text & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    deskripsi: Schema.Attribute.Text & Schema.Attribute.Required;
+    email: Schema.Attribute.Email;
+    foto_detail: Schema.Attribute.Media<'images'>;
+    jurusans: Schema.Attribute.Relation<'manyToMany', 'api::jurusan.jurusan'>;
+    kategori: Schema.Attribute.Relation<'manyToMany', 'api::kategori.kategori'>;
+    kegiatan_pkl: Schema.Attribute.Blocks;
+    kuota: Schema.Attribute.Integer & Schema.Attribute.Required;
+    link_maps: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::tempat-pkl.tempat-pkl'
+    > &
+      Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    lokasi_utama: Schema.Attribute.Text & Schema.Attribute.Required;
+    nama_tempat: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    roles: Schema.Attribute.Relation<'manyToMany', 'api::rolesss.rolesss'>;
+    slug: Schema.Attribute.UID<'nama_tempat'> & Schema.Attribute.Required;
+    telepon: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    website: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -1050,6 +1094,7 @@ declare module '@strapi/strapi' {
       'api::jurusan.jurusan': ApiJurusanJurusan;
       'api::kategori.kategori': ApiKategoriKategori;
       'api::rolesss.rolesss': ApiRolesssRolesss;
+      'api::tempat-pkl.tempat-pkl': ApiTempatPklTempatPkl;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

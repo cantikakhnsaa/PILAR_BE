@@ -1,0 +1,97 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tempat_pkls",
+  "info": {
+    "singularName": "tempat-pkl",
+    "pluralName": "tempat-pkls",
+    "displayName": "Tempat PKL"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nama_tempat": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "nama_tempat",
+      "required": true
+    },
+    "deskripsi": {
+      "type": "text",
+      "required": true
+    },
+    "card_description": {
+      "type": "text",
+      "required": true
+    },
+    "kuota": {
+      "type": "integer",
+      "required": true
+    },
+    "lokasi_utama": {
+      "type": "text",
+      "required": true
+    },
+    "link_maps": {
+      "type": "string",
+      "required": false
+    },
+    "telepon": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": false
+    },
+    "website": {
+      "type": "string",
+      "required": true
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "foto_detail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "kategori": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::kategori.kategori"
+    },
+    "jurusans": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::jurusan.jurusan"
+    },
+    "roles": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::rolesss.rolesss"
+    },
+    "cabang_list": {
+      "type": "component",
+      "component": "cabang.cabang",
+      "repeatable": true,
+      "required": false
+    },
+    "kegiatan_pkl": {
+      "type": "blocks",
+      "required": false
+    }
+  }
+}

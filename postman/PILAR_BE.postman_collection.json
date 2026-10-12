@@ -1,0 +1,380 @@
+{
+  "info": {
+    "name": "PILAR Backend API",
+    "description": "Koleksi pengujian API PILAR. Jalankan pada backend lokal. Request tulis menggunakan token dan jangan dijalankan pada data produksi tanpa persetujuan.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "noauth"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:1337"
+    },
+    {
+      "key": "documentId",
+      "value": "GANTI_DENGAN_DOCUMENT_ID_VALID"
+    },
+    {
+      "key": "jwt",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Tempat PKL",
+      "item": [
+        {
+          "name": "Daftar Tempat PKL dengan relasi dan gambar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tempat-pkls?pagination[page]=1&pagination[pageSize]=5&populate[logo]=true&populate[foto_detail]=true&populate[kategori]=true&populate[jurusans]=true&populate[roles]=true&populate[cabang_list]=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tempat-pkls"
+              ],
+              "query": [
+                {
+                  "key": "pagination[page]",
+                  "value": "1"
+                },
+                {
+                  "key": "pagination[pageSize]",
+                  "value": "5"
+                },
+                {
+                  "key": "populate[logo]",
+                  "value": "true"
+                },
+                {
+                  "key": "populate[foto_detail]",
+                  "value": "true"
+                },
+                {
+                  "key": "populate[kategori]",
+                  "value": "true"
+                },
+                {
+                  "key": "populate[jurusans]",
+                  "value": "true"
+                },
+                {
+                  "key": "populate[roles]",
+                  "value": "true"
+                },
+                {
+                  "key": "populate[cabang_list]",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Respons memiliki data array', function () { pm.expect(pm.response.json().data).to.be.an('array'); });",
+                  "pm.test('Respons memiliki pagination', function () { pm.expect(pm.response.json().meta.pagination).to.exist; });",
+                  "if (pm.response.json().data.length > 0) { pm.collectionVariables.set('documentId', pm.response.json().data[0].documentId); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Detail Tempat PKL",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tempat-pkls/{{documentId}}?populate[logo]=true&populate[foto_detail]=true&populate[kategori]=true&populate[jurusans]=true&populate[roles]=true&populate[cabang_list]=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tempat-pkls",
+                "{{documentId}}"
+              ],
+              "query": [
+                {
+                  "key": "populate[logo]",
+                  "value": "true"
+                },
+                {
+                  "key": "populate[foto_detail]",
+                  "value": "true"
+                },
+                {
+                  "key": "populate[kategori]",
+                  "value": "true"
+                },
+                {
+                  "key": "populate[jurusans]",
+                  "value": "true"
+                },
+                {
+                  "key": "populate[roles]",
+                  "value": "true"
+                },
+                {
+                  "key": "populate[cabang_list]",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Dokumen memiliki documentId', function () { pm.expect(pm.response.json().data.documentId).to.exist; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cari nama tempat",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tempat-pkls?filters[nama_tempat][$containsi]=sawala",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tempat-pkls"
+              ],
+              "query": [
+                {
+                  "key": "filters[nama_tempat][$containsi]",
+                  "value": "sawala"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter kategori",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tempat-pkls?filters[kategori][slug][$eq]=pemerintahan-and-pelayanan-publik&populate[kategori]=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tempat-pkls"
+              ],
+              "query": [
+                {
+                  "key": "filters[kategori][slug][$eq]",
+                  "value": "pemerintahan-and-pelayanan-publik"
+                },
+                {
+                  "key": "populate[kategori]",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter jurusan",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tempat-pkls?filters[jurusans][slug][$eq]=pplg&populate[jurusans]=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tempat-pkls"
+              ],
+              "query": [
+                {
+                  "key": "filters[jurusans][slug][$eq]",
+                  "value": "pplg"
+                },
+                {
+                  "key": "populate[jurusans]",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter role",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tempat-pkls?filters[roles][slug][$eq]=backend&populate[roles]=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tempat-pkls"
+              ],
+              "query": [
+                {
+                  "key": "filters[roles][slug][$eq]",
+                  "value": "backend"
+                },
+                {
+                  "key": "populate[roles]",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Pagination dan sorting",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tempat-pkls?pagination[page]=1&pagination[pageSize]=9&sort=nama_tempat:asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tempat-pkls"
+              ],
+              "query": [
+                {
+                  "key": "pagination[page]",
+                  "value": "1"
+                },
+                {
+                  "key": "pagination[pageSize]",
+                  "value": "9"
+                },
+                {
+                  "key": "sort",
+                  "value": "nama_tempat:asc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST tanpa token - uji blokir akses",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{baseUrl}}/api/tempat-pkls"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Akses tulis publik ditolak atau validasi menolak body kosong', function () { pm.expect([400, 401, 403]).to.include(pm.response.code); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Master Data",
+      "item": [
+        {
+          "name": "Daftar kategori",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/kategoris?pagination[page]=1&pagination[pageSize]=100"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Data berupa array', function () { pm.expect(pm.response.json().data).to.be.an('array'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Daftar jurusan",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/jurusans?pagination[page]=1&pagination[pageSize]=100"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Daftar role",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/roless?pagination[page]=1&pagination[pageSize]=100"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

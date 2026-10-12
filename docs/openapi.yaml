@@ -1,0 +1,580 @@
+openapi: 3.0.3
+info:
+  title: PILAR Backend API
+  version: 1.0.0
+  description: >-
+    Spesifikasi awal REST API PILAR berdasarkan skema Strapi v5.
+    Filter dan integrasi frontend perlu diverifikasi sebelum kontrak final.
+servers:
+  - url: http://localhost:1337
+    description: Pengembangan lokal
+tags:
+  - name: Tempat PKL
+  - name: Kategori
+  - name: Jurusan
+  - name: Role
+paths:
+  /api/tempat-pkls:
+    get:
+      tags: [Tempat PKL]
+      summary: Daftar tempat PKL
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+        - name: sort
+          in: query
+          schema:
+            type: string
+          example: nama_tempat:asc
+        - name: filters[nama_tempat][$containsi]
+          in: query
+          schema:
+            type: string
+          description: Pencarian nama tanpa membedakan huruf besar/kecil.
+        - name: filters[kategori][slug][$eq]
+          in: query
+          schema:
+            type: string
+        - name: filters[jurusans][slug][$eq]
+          in: query
+          schema:
+            type: string
+        - name: filters[roles][slug][$eq]
+          in: query
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Populate'
+      responses:
+        '200':
+          description: Daftar tempat PKL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      tags: [Tempat PKL]
+      summary: Membuat tempat PKL
+      description: Memerlukan permission tulis yang sesuai. Belum dinyatakan sebagai akses publik.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/TempatPKLInput'
+      responses:
+        '200':
+          description: Respons pembuatan dari server
+        '201':
+          description: Data berhasil dibuat
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/tempat-pkls/{documentId}:
+    parameters:
+      - $ref: '#/components/parameters/DocumentId'
+    get:
+      tags: [Tempat PKL]
+      summary: Detail tempat PKL
+      parameters:
+        - $ref: '#/components/parameters/Populate'
+      responses:
+        '200':
+          description: Detail tempat PKL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Tempat PKL]
+      summary: Memperbarui tempat PKL
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/TempatPKLInput'
+      responses:
+        '200':
+          description: Data berhasil diperbarui
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Tempat PKL]
+      summary: Menghapus tempat PKL
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Respons penghapusan dari server
+        '204':
+          description: Data berhasil dihapus
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/kategoris:
+    get:
+      tags: [Kategori]
+      summary: Daftar kategori
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Daftar kategori
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+    post:
+      tags: [Kategori]
+      summary: Membuat kategori
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/MasterDataInput'
+      responses:
+        '201':
+          description: Data berhasil dibuat
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/kategoris/{documentId}:
+    parameters:
+      - $ref: '#/components/parameters/DocumentId'
+    get:
+      tags: [Kategori]
+      summary: Detail kategori
+      responses:
+        '200':
+          description: Detail kategori
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Kategori]
+      summary: Memperbarui kategori
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  $ref: '#/components/schemas/MasterDataInput'
+      responses:
+        '200':
+          description: Data berhasil diperbarui
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    delete:
+      tags: [Kategori]
+      summary: Menghapus kategori
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Respons penghapusan dari server
+        '204':
+          description: Data berhasil dihapus
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/jurusans:
+    get:
+      tags: [Jurusan]
+      summary: Daftar jurusan
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Daftar jurusan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+    post:
+      tags: [Jurusan]
+      summary: Membuat jurusan
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [data]
+              properties:
+                data:
+                  $ref: '#/components/schemas/MasterDataInput'
+      responses:
+        '201':
+          description: Jurusan berhasil dibuat
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/jurusans/{documentId}:
+    parameters:
+      - $ref: '#/components/parameters/DocumentId'
+    get:
+      tags: [Jurusan]
+      summary: Detail jurusan
+      responses:
+        '200':
+          description: Detail jurusan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Jurusan]
+      summary: Memperbarui jurusan
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [data]
+              properties:
+                data:
+                  $ref: '#/components/schemas/MasterDataInput'
+      responses:
+        '200':
+          description: Jurusan berhasil diperbarui
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Jurusan]
+      summary: Menghapus jurusan
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Jurusan berhasil dihapus
+        '204':
+          description: Jurusan berhasil dihapus tanpa response body
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/roless:
+    get:
+      tags: [Role]
+      summary: Daftar role
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Daftar role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+    post:
+      tags: [Role]
+      summary: Membuat role
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [data]
+              properties:
+                data:
+                  $ref: '#/components/schemas/MasterDataInput'
+      responses:
+        '201':
+          description: Role berhasil dibuat
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /api/roless/{documentId}:
+    parameters:
+      - $ref: '#/components/parameters/DocumentId'
+    get:
+      tags: [Role]
+      summary: Detail role
+      responses:
+        '200':
+          description: Detail role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Role]
+      summary: Memperbarui role
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [data]
+              properties:
+                data:
+                  $ref: '#/components/schemas/MasterDataInput'
+      responses:
+        '200':
+          description: Role berhasil diperbarui
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Role]
+      summary: Menghapus role
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Role berhasil dihapus
+        '204':
+          description: Role berhasil dihapus tanpa response body
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    DocumentId:
+      name: documentId
+      in: path
+      required: true
+      description: documentId dari Strapi v5.
+      schema:
+        type: string
+    Page:
+      name: pagination[page]
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PageSize:
+      name: pagination[pageSize]
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 25
+    Populate:
+      name: populate
+      in: query
+      description: >-
+        Untuk media dan relasi, gunakan parameter populate sesuai field,
+        misalnya populate[logo]=true dan populate[kategori]=true.
+      schema:
+        type: string
+  schemas:
+    MasterDataInput:
+      type: object
+      properties:
+        nama:
+          type: string
+        slug:
+          type: string
+    TempatPKLInput:
+      type: object
+      properties:
+        nama_tempat:
+          type: string
+        slug:
+          type: string
+        deskripsi:
+          type: string
+        card_description:
+          type: string
+        kuota:
+          type: integer
+        lokasi_utama:
+          type: string
+        link_maps:
+          type: string
+        telepon:
+          type: string
+        email:
+          type: string
+          format: email
+        website:
+          type: string
+        logo:
+          description: Format media mengikuti kontrak upload Strapi.
+        foto_detail:
+          description: Opsional, format media mengikuti kontrak upload Strapi.
+        kategori:
+          description: Relasi many-to-many.
+        jurusans:
+          description: Relasi many-to-many.
+        roles:
+          description: Relasi many-to-many.
+        cabang_list:
+          type: array
+          items:
+            type: object
+        kegiatan_pkl:
+          type: array
+          items:
+            type: object
+    ListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              documentId:
+                type: string
+              nama:
+                type: string
+              slug:
+                type: string
+        meta:
+          type: object
+          properties:
+            pagination:
+              type: object
+              properties:
+                page:
+                  type: integer
+                pageSize:
+                  type: integer
+                pageCount:
+                  type: integer
+                total:
+                  type: integer
+    DetailResponse:
+      type: object
+      properties:
+        data:
+          type: object
+        meta:
+          type: object
+    ErrorResponse:
+      type: object
+      properties:
+        data:
+          nullable: true
+        error:
+          type: object
+          properties:
+            status:
+              type: integer
+            name:
+              type: string
+            message:
+              type: string
+    Error:
+      type: object
+      properties:
+        data:
+          nullable: true
+        error:
+          type: object
+    BadRequest:
+      type: object
+      properties:
+        data:
+          nullable: true
+        error:
+          type: object
+    responses:
+      BadRequest:
+        description: Request tidak valid
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      Unauthorized:
+        description: Token tidak tersedia atau tidak valid
+      Forbidden:
+        description: Permission tidak mengizinkan operasi
+      NotFound:
+        description: Resource tidak ditemukan
