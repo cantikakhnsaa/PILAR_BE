@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_cabang_cabangs",
+  "info": {
+    "displayName": "Cabang",
+    "icon": "map-marker"
+  },
+  "options": {},
+  "attributes": {
+    "nama_cabang": {
+      "type": "string",
+      "required": false
+    },
+    "alamat_lengkap": {
+      "type": "text",
+      "required": false
+    },
+    "link_maps": {
+      "type": "string",
+      "required": false
+    },
+    "telepon": {
+      "type": "string",
+      "required": false
+    }
+  }
+}
