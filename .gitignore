@@ -129,3 +129,8 @@ dist
 build
 .strapi-updater.json
 .strapi-cloud.json
+# Backup lokal pemulihan database dan konfigurasi
+.env.sebelum_pemulihan
+README.md.backup_20261012_180521
+docs/api.md.backup_20261012_180521
+docs/openapi.yaml.backup_crud_20261013_032100
