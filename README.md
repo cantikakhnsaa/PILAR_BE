@@ -77,3 +77,8 @@ Jalankan pengujian terhadap backend lokal yang sedang aktif. Respons yang berhas
 ## Catatan integrasi
 
 Nama field backend harus dicocokkan dengan kontrak frontend. Perubahan field atau relasi harus melalui diskusi dan review agar tidak merusak integrasi.
+
+
+## Integrasi Cloudinary
+
+Konfigurasi, hasil pengujian, batasan verifikasi, dan rencana pengujian provider upload dijelaskan di [dokumentasi Cloudinary](docs/cloudinary.md).
