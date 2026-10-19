@@ -1,3 +1,4 @@
+
 import type { Core } from '@strapi/strapi';
 
 const config: Core.Config.Middlewares = [
@@ -35,6 +36,7 @@ const config: Core.Config.Middlewares = [
   'strapi::body',
   'strapi::session',
   'strapi::favicon',
+  'global::cloudinary-legacy-map',
   'strapi::public',
 ];
 
