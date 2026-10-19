@@ -61,6 +61,18 @@ export default (_config: unknown, { strapi }: { strapi: Core.Strapi }) => {
   return async (ctx: any, next: () => Promise<void>) => {
     await next();
 
+    if (ctx.path === '/upload/files') {
+      const bodyType = Array.isArray(ctx.body)
+        ? 'array'
+        : ctx.body === null
+          ? 'null'
+          : typeof ctx.body;
+
+      strapi.log.info(
+        `[cloudinary-legacy-map] upload-files response: bodyType=${bodyType}, hasBody=${Boolean(ctx.body)}`
+      );
+    }
+
     if (
       !(ctx.path.startsWith('/api/') || ctx.path.startsWith('/upload/')) ||
       !ctx.body ||
@@ -69,6 +81,9 @@ export default (_config: unknown, { strapi }: { strapi: Core.Strapi }) => {
       return;
     }
 
+    let localUrlCount = 0;
+    let mappedUrlCount = 0;
+
     const rewriteUrls = (value: any): void => {
       if (!value || typeof value !== 'object') return;
 
@@ -76,6 +91,8 @@ export default (_config: unknown, { strapi }: { strapi: Core.Strapi }) => {
         typeof value.url === 'string' &&
         value.url.startsWith('/uploads/')
       ) {
+        localUrlCount++;
+
         const filename = value.url
           .split('/')
           .pop()
@@ -86,6 +103,7 @@ export default (_config: unknown, { strapi }: { strapi: Core.Strapi }) => {
 
           if (mappedUrl) {
             value.url = mappedUrl;
+            mappedUrlCount++;
           }
         }
       }
@@ -102,5 +120,11 @@ export default (_config: unknown, { strapi }: { strapi: Core.Strapi }) => {
     };
 
     rewriteUrls(ctx.body);
+
+    if (ctx.path === '/upload/files') {
+      strapi.log.info(
+        `[cloudinary-legacy-map] upload-files URLs: local=${localUrlCount}, mapped=${mappedUrlCount}`
+      );
+    }
   };
 };
