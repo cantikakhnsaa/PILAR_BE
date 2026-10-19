@@ -1,4 +1,4 @@
-﻿
+
 import fs from 'node:fs';
 import path from 'node:path';
 import type { Core } from '@strapi/strapi';
@@ -62,7 +62,7 @@ export default (_config: unknown, { strapi }: { strapi: Core.Strapi }) => {
     await next();
 
     if (
-      !ctx.path.startsWith('/api/') ||
+      !(ctx.path.startsWith('/api/') || ctx.path.startsWith('/upload/')) ||
       !ctx.body ||
       typeof ctx.body !== 'object'
     ) {
